@@ -25,7 +25,7 @@ class App extends Component {
 
   onSearchChange = (event) => {
     this.setState({
-      search: event.input.value
+      search: event.target.value
     })
   }
 
