@@ -3,12 +3,7 @@ import React from 'react'
 
 
 export default class Card extends React.Component {
-constructor(props) {
-    super(props)
-    this.state = {
-        restaurants: []
-    }
-}
+
 
     render(){
         return(
@@ -18,7 +13,7 @@ constructor(props) {
                 <form>
                     {this.props.restaurant.name}{' : '}
                     {/* Visited? */}
-                    <input type="checkbox" value={this.props.restaurant.name} id="checkbox" ></input>
+                    <input type="checkbox" value={this.props.restaurant.name} id="checkbox" onClick={() => this.props.onVisited(this.props.restaurant.id)}></input>
                 </form>
             </div>
         </div>
