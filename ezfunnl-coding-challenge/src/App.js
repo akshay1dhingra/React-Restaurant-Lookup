@@ -9,8 +9,8 @@ class App extends Component {
     super()
 
     this.state = {
-      restaurants: ['hi'],
-      visited: false,
+      restaurants: [],
+      visited: [],
       search: ''
     }
   }
@@ -26,14 +26,14 @@ class App extends Component {
     // }
     fetch(url)
     .then(response => response.json())
-    // .then(data => console.log(data))
-    .then(data => this.setState({restaurants: data.results}))
+    .then(data => console.log(data))
+    // .then(data => this.setState({restaurants: data.results}))
   }
 
   onSearchChange = (event) => {
     // event.persist();
     this.setState({
-      [event.target.name]: event.target.value //this is not changing the value of search for some reason
+      [event.target.name]: event.target.value 
     })
   }
 
@@ -42,18 +42,22 @@ class App extends Component {
     this.fetchRequest()
   }
 
-  onVisited = () => {
-    this.setState({
-      visited: true
+  onVisited = (id) => {
+    let newArray = this.state.restaurants.map(r => {
+      return r.id === id ? r.name : ''
     })
+    this.setState({
+      visited: newArray
+    })
+    console.log(this.state.visited)
   }
 
-  updateRestaurant = (event) => {
-    this.setState({
-      restaurants: event.target.value
-    })
-    console.log(this.state.restaurants)
-  }
+  // updateRestaurant = (event) => {
+  //   this.setState({
+  //     restaurants: event.target.value
+  //   })
+  //   console.log(this.state.restaurants)
+  // }
 
   // componentWillMount(nextProps, nextState) {
   //   localStorage.setItem('restaurant', JSON.stringify(nextState.restaurants))
@@ -75,7 +79,7 @@ class App extends Component {
          <div className="results_area">
             <Display 
               searchResults={this.state.restaurants}
-              onVisited={this.state.visited}
+              updateRestaurant={this.updateRestaurant}
             />
          </div>
          <div></div>
