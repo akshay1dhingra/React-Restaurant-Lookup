@@ -9,7 +9,7 @@ class App extends Component {
     super()
 
     this.state = {
-      restaurants: [],
+      restaurants: ['hi'],
       visited: false,
       search: ''
     }
@@ -48,6 +48,17 @@ class App extends Component {
     })
   }
 
+  updateRestaurant = (event) => {
+    this.setState({
+      restaurants: event.target.value
+    })
+    console.log(this.state.restaurants)
+  }
+
+  // componentWillMount(nextProps, nextState) {
+  //   localStorage.setItem('restaurant', JSON.stringify(nextState.restaurants))
+  // }
+
   render() {
     return (
       <div className="App">
@@ -67,6 +78,7 @@ class App extends Component {
               onVisited={this.state.visited}
             />
          </div>
+         <div></div>
         </header>
       </div>
     );
