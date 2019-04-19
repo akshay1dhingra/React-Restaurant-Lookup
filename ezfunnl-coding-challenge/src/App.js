@@ -26,8 +26,8 @@ class App extends Component {
     // }
     fetch(url)
     .then(response => response.json())
-    .then(data => console.log(data))
-    // .then(data => this.setState({restaurants: data.results}))
+    // .then(data => console.log(data))
+    .then(data => this.setState({restaurants: data.results}))
   }
 
   onSearchChange = (event) => {
@@ -43,11 +43,14 @@ class App extends Component {
   }
 
   onVisited = (id) => {
-    let newArray = this.state.restaurants.map(r => {
-      return r.id === id ? r.name : ''
+    let newArray = this.state.restaurants.find(r => {
+      return r.id === id ? r : null
     })
-    this.setState({
-      visited: newArray
+    this.setState(state => {
+      const visited = [...state.visited, newArray] // state.visited.concat(newArray); <--- this also works
+      return {
+        visited
+      }
     })
     console.log(this.state.visited)
   }
@@ -79,7 +82,7 @@ class App extends Component {
          <div className="results_area">
             <Display 
               searchResults={this.state.restaurants}
-              updateRestaurant={this.updateRestaurant}
+              onVisited={this.onVisited}
             />
          </div>
          <div></div>
