@@ -11,22 +11,35 @@ class App extends Component {
     this.state = {
       restaurants: [],
       visited: false,
-      search: '60622'
+      search: ''
     }
   }
 
-  componentDidMount() {
-    let search = this.state.search
-    fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?type=restaurant&key=AIzaSyA2tDqVwCXGvU5Lx2d2J-vjcId5gPXczW4&query='+search)
+  // componentDidMount() {
+  //   this.fetchRequest()
+  // }
+
+  fetchRequest = () => {
+    let url = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?type=restaurant&key=AIzaSyA2tDqVwCXGvU5Lx2d2J-vjcId5gPXczW4&query='
+    // if (this.state.search !== '') {
+      url = url +`${this.state.search}`
+    // }
+    fetch(url)
     .then(response => response.json())
     // .then(data => console.log(data))
     .then(data => this.setState({restaurants: data.results}))
   }
 
   onSearchChange = (event) => {
+    // event.persist();
     this.setState({
-      search: event.target.value
+      [event.target.name]: event.target.value //this is not changing the value of search for some reason
     })
+  }
+
+  onSubmitForm = (event) => {
+    event.preventDefault()
+    this.fetchRequest()
   }
 
   onVisited = () => {
@@ -40,9 +53,13 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
         <div className="search_area">
-            <SearchBar 
-              searchBar={this.onSearchChange}
-            />
+                <form onSubmit={this.onSubmitForm}>
+                    <label>
+                        Zipcode: 
+                        <input type="text" name="search" value={this.state.search} onChange={this.onSearchChange}/>
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
          </div>
          <div className="results_area">
             <Display 
