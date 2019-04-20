@@ -43,17 +43,33 @@ class App extends Component {
   }
 
   onVisited = (id) => {
-    let newArray = this.state.restaurants.find(r => {
+    let newVisitedObject = this.state.restaurants.find(r => {
       return r.id === id ? r : null
     })
     this.setState(state => {
-      const visited = [...state.visited, newArray] // state.visited.concat(newArray); <--- this also works
+      const visited = [...state.visited, newVisitedObject] 
+      localStorage.setItem('restaurant', JSON.stringify(visited))
       return {
         visited
       }
-    })
-    console.log(this.state.visited)
+    }, () => {
+      console.log(this.state.visited)
+      
+    });
+    
   }
+
+  getLocalStorage = () => {
+    let restaurants = JSON.parse(localStorage.getItem("restaurant") || "[]");
+    console.log("# of restaurants: " + restaurants.length);
+    restaurants.forEach(function(restaurant, index) {
+        console.log("[" + index + "]: " + restaurant.id);
+        return restaurant
+    });
+  }
+
+  
+// state.visited.concat(newVisitedObject); <--- this also works
 
   // updateRestaurant = (event) => {
   //   this.setState({
