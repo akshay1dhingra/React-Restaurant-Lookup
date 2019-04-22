@@ -11,6 +11,7 @@ class App extends Component {
     this.state = {
       restaurants: [],
       visited: [],
+      localStorageData: [],
       search: ''
     }
   }
@@ -54,18 +55,21 @@ class App extends Component {
       }
     }, () => {
       console.log(this.state.visited)
-      
     });
     
   }
 
   getLocalStorage = () => {
-    let restaurants = JSON.parse(localStorage.getItem("restaurant") || "[]");
+    let restaurants = JSON.parse(localStorage.getItem('restaurant' || '[]'));
     console.log("# of restaurants: " + restaurants.length);
-    restaurants.forEach(function(restaurant, index) {
-        console.log("[" + index + "]: " + restaurant.id);
-        return restaurant
-    });
+    this.setState({
+      localStorageData: restaurants
+    }, () => {
+      console.log(this.state.localStorageData + ' hi')
+    })
+    // restaurants.forEach(function(restaurant, index) {
+    //     console.log("[" + index + "]: " + restaurant.id);
+    // });
   }
 
   
@@ -101,7 +105,11 @@ class App extends Component {
               onVisited={this.onVisited}
             />
          </div>
-         <div></div>
+         <div>
+          <button onClick={this.getLocalStorage}>
+            Get your saved restaurants
+          </button>
+         </div>
         </header>
       </div>
     );
