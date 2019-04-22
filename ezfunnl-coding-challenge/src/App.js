@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import SearchBar from './components/searchBar'
 import Display from './components/display'
+import VisitedRestaurants from './components/visitedRestaurants'
 // import axios from 'axios';
 
 class App extends Component {
@@ -10,15 +11,11 @@ class App extends Component {
 
     this.state = {
       restaurants: [],
-      visited: [],
+      visited: this.getRestaurants(),
       localStorageData: [],
       search: ''
     }
   }
-
-  // componentDidMount() {
-  //   this.fetchRequest()
-  // }
 
   fetchRequest = () => {
     let url = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?type=restaurant&key=AIzaSyA2tDqVwCXGvU5Lx2d2J-vjcId5gPXczW4&query='
@@ -43,36 +40,79 @@ class App extends Component {
     this.fetchRequest()
   }
 
-  onVisited = (id) => {
-    let newVisitedObject = this.state.restaurants.find(r => {
-      return r.id === id ? r : null
-    })
-    this.setState(state => {
-      const visited = [...state.visited, newVisitedObject] 
-      localStorage.setItem('restaurant', JSON.stringify(visited))
-      return {
-        visited
-      }
-    }, () => {
-      console.log(this.state.visited)
-    });
+  onVisited = (e) => {
+    const id = e.target.dataset.restaurantId;
+    const isAdding = e.target.checked;
+
+    let updatedRestaurants;
+    if (isAdding) {
+      const newRestaurant = this.state.restaurants.find(r => r.id === id)
+      updatedRestaurants = [...this.state.visited, newRestaurant]
+    } else {
+      updatedRestaurants = this.state.visited.filter((r) => r.id !== id);
+    }
+
+    this.setState({visited: updatedRestaurants})
+    localStorage.setItem('restaurant', JSON.stringify(updatedRestaurants))
+
+    // if (isAdding) {
+    //   let newVisitedObject = this.state.restaurants.find(r => {
+    //     return r.id === id 
+    //   })
+    //   this.setState(state => {
+    //     const visited = [...state.visited, newVisitedObject] 
+    //     localStorage.setItem('restaurant', JSON.stringify(visited))
+    //     return {
+    //       visited
+    //     }
+    //   });
+    // } else {
+    //   const newVisitedRestaurants = [...this.state.visited].filter((r) => r.id !== id);
+    //   localStorage.setItem('restaurant', JSON.stringify(newVisitedRestaurants));
+    //   this.setState({
+    //     visited: newVisitedRestaurants
+    //   })
+    // }
     
+
   }
 
-  getLocalStorage = () => {
-    let restaurants = JSON.parse(localStorage.getItem('restaurant' || '[]'));
-    console.log("# of restaurants: " + restaurants.length);
-    this.setState({
-      localStorageData: restaurants
-    }, () => {
-      console.log(this.state.localStorageData + ' hi')
-    })
-    // restaurants.forEach(function(restaurant, index) {
-    //     console.log("[" + index + "]: " + restaurant.id);
-    // });
+  clearDisplay = () => {
+    this.setState({restaurants: []})
   }
 
-  
+  getRestaurants() {
+    const restaurants = localStorage.getItem('restaurant');
+    if (!restaurants) {
+        return [];
+    }
+    return JSON.parse(restaurants);
+}
+
+  // componentWillMount() {
+  //   localStorage.getItem('restaurant') && this.setState({
+  //     localStorageData: JSON.parse(localStorage.getItem('restaurant'))
+  //   })
+  // }
+
+  // getLocalStorage = () => {
+  //   console.log(this.state.getLocalStorage)
+  // }
+
+  // getLocalStorage = () => {
+  //   let restaurants = JSON.parse(localStorage.getItem('restaurant' || '[]'));
+  //   console.log("# of restaurants: " + restaurants.length);
+  //   this.setState({
+  //     localStorageData: restaurants
+  //   }, () => {
+  //     console.log(this.state.localStorageData + ' hi')
+  //   })
+  //   // restaurants.forEach(function(restaurant, index) {
+  //   //     console.log("[" + index + "]: " + restaurant.id);
+  //   // });
+  // }
+
+
 // state.visited.concat(newVisitedObject); <--- this also works
 
   // updateRestaurant = (event) => {
@@ -99,16 +139,23 @@ class App extends Component {
                     <input type="submit" value="Submit" />
                 </form>
          </div>
+         <div>
+           <button onClick={this.clearDisplay}>Clear Results</button>
+         </div>
          <div className="results_area">
             <Display 
               searchResults={this.state.restaurants}
               onVisited={this.onVisited}
+              isVisitedFunc={(restaurantId) => this.getRestaurants().some(r => r.id === restaurantId)}
             />
          </div>
          <div>
-          <button onClick={this.getLocalStorage}>
-            Get your saved restaurants
-          </button>
+            Your saved Restaurants:
+         </div>
+         <div className="local_storage">
+           <VisitedRestaurants 
+            restaurants={this.getRestaurants()}
+           />
          </div>
         </header>
       </div>
