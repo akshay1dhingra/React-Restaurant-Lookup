@@ -3,7 +3,7 @@ import './App.css';
 import SearchBar from './components/searchBar'
 import Display from './components/display'
 import VisitedRestaurants from './components/visitedRestaurants'
-// import axios from 'axios';
+
 
 class App extends Component {
   constructor() {
@@ -18,17 +18,13 @@ class App extends Component {
 
   fetchRequest = () => {
     let url = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?type=restaurant&key=${process.env.REACT_APP_PLACES_API_KEY}&query=`
-    // if (this.state.search !== '') {
       url = url +`${this.state.search}`
-    // }
     fetch(url)
     .then(response => response.json())
-    // .then(data => console.log(data))
     .then(data => this.setState({restaurants: data.results}))
   }
 
   onSearchChange = (event) => {
-    // event.persist();
     this.setState({
       [event.target.name]: event.target.value 
     })
@@ -53,27 +49,6 @@ class App extends Component {
 
     this.setState({visited: updatedRestaurants})
     localStorage.setItem('restaurant', JSON.stringify(updatedRestaurants))
-
-    // if (isAdding) {
-    //   let newVisitedObject = this.state.restaurants.find(r => {
-    //     return r.id === id 
-    //   })
-    //   this.setState(state => {
-    //     const visited = [...state.visited, newVisitedObject] 
-    //     localStorage.setItem('restaurant', JSON.stringify(visited))
-    //     return {
-    //       visited
-    //     }
-    //   });
-    // } else {
-    //   const newVisitedRestaurants = [...this.state.visited].filter((r) => r.id !== id);
-    //   localStorage.setItem('restaurant', JSON.stringify(newVisitedRestaurants));
-    //   this.setState({
-    //     visited: newVisitedRestaurants
-    //   })
-    // }
-    
-
   }
 
   clearDisplay = () => {
@@ -87,43 +62,6 @@ class App extends Component {
     }
     return JSON.parse(restaurants);
 }
-
-  // componentWillMount() {
-  //   localStorage.getItem('restaurant') && this.setState({
-  //     localStorageData: JSON.parse(localStorage.getItem('restaurant'))
-  //   })
-  // }
-
-  // getLocalStorage = () => {
-  //   console.log(this.state.getLocalStorage)
-  // }
-
-  // getLocalStorage = () => {
-  //   let restaurants = JSON.parse(localStorage.getItem('restaurant' || '[]'));
-  //   console.log("# of restaurants: " + restaurants.length);
-  //   this.setState({
-  //     localStorageData: restaurants
-  //   }, () => {
-  //     console.log(this.state.localStorageData + ' hi')
-  //   })
-  //   // restaurants.forEach(function(restaurant, index) {
-  //   //     console.log("[" + index + "]: " + restaurant.id);
-  //   // });
-  // }
-
-
-// state.visited.concat(newVisitedObject); <--- this also works
-
-  // updateRestaurant = (event) => {
-  //   this.setState({
-  //     restaurants: event.target.value
-  //   })
-  //   console.log(this.state.restaurants)
-  // }
-
-  // componentWillMount(nextProps, nextState) {
-  //   localStorage.setItem('restaurant', JSON.stringify(nextState.restaurants))
-  // }
 
   render() {
     return (
