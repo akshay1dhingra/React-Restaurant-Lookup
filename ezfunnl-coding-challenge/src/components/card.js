@@ -4,7 +4,6 @@ import React from 'react'
 
 export default class Card extends React.Component {
 
-
     render(){
         return(
         <div>
@@ -13,7 +12,14 @@ export default class Card extends React.Component {
                 <form>
                     {this.props.restaurant.name}{' : '}
                     {/* Visited? */}
-                    <input type="checkbox" value={this.props.restaurant.name} id="checkbox" onClick={() => this.props.onVisited(this.props.restaurant.id)}></input>
+                    <input
+                        type="checkbox"
+                        value={this.props.restaurant.name}
+                        id="checkbox"
+                        checked={this.props.isVisited}
+                        data-restaurant-id={this.props.restaurant.id}
+                        onChange={this.props.onVisited}
+                    />
                 </form>
             </div>
         </div>
