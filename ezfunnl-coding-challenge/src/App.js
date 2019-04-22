@@ -8,7 +8,6 @@ import VisitedRestaurants from './components/visitedRestaurants'
 class App extends Component {
   constructor() {
     super()
-
     this.state = {
       restaurants: [],
       visited: this.getRestaurants(),
@@ -18,7 +17,7 @@ class App extends Component {
   }
 
   fetchRequest = () => {
-    let url = 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?type=restaurant&key=AIzaSyA2tDqVwCXGvU5Lx2d2J-vjcId5gPXczW4&query='
+    let url = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?type=restaurant&key=${process.env.REACT_APP_PLACES_API_KEY}&query=`
     // if (this.state.search !== '') {
       url = url +`${this.state.search}`
     // }
