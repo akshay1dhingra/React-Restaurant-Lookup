@@ -131,13 +131,11 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
         <div className="search_area">
-                <form onSubmit={this.onSubmitForm}>
-                    <label>
-                        Zipcode: 
-                        <input type="text" name="search" value={this.state.search} onChange={this.onSearchChange}/>
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
+          <SearchBar 
+            onSubmitForm={this.onSubmitForm}
+            onSearchChange={this.onSearchChange}
+            search={this.state.search}
+          />  
          </div>
          <div>
            <button onClick={this.clearDisplay}>Clear Results</button>
