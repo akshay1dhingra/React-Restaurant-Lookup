@@ -6,7 +6,7 @@ export default function SearchBar(props){
             <form onSubmit={props.onSubmitForm}>
                 <label>
                     Zipcode: 
-                    <input type="text" name="search" value={props.search} onChange={props.onSearchChange}/>
+                    <input type="text" name="search" onChange={props.onSearchChange}/>
                 </label>
                 <input type="submit" value="Submit" />
             </form>
