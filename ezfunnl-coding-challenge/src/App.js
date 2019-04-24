@@ -11,7 +11,6 @@ class App extends Component {
     this.state = {
       restaurants: [],
       visited: this.getRestaurants(),
-      localStorageData: [],
       search: ''
     }
   }
@@ -71,7 +70,6 @@ class App extends Component {
           <SearchBar 
             onSubmitForm={this.onSubmitForm}
             onSearchChange={this.onSearchChange}
-            search={this.state.search}
           />  
          </div>
          <div>
