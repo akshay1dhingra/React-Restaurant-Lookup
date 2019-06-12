@@ -61,6 +61,9 @@ class App extends Component {
     }
     return JSON.parse(restaurants);
 }
+  // isVisitedFunc = (restaurantId) => {
+  //   this.getRestaurants().some(r => r.id === restaurantId)
+  // }
 
   render() {
     return (
